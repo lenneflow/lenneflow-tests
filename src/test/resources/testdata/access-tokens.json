@@ -1,0 +1,10 @@
+{
+  "LOCAL": {
+    "resourcePath": "/api/workers/cluster/access-token",
+    "payload": {
+      "description" : "Token of my local k8s",
+      "token" : "THETOKEN",
+      "expiration" : "31.12.2099"
+    }
+  }
+}

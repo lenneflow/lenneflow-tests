@@ -1,0 +1,24 @@
+{
+  "AWS": {
+    "clusterName" : "MyCLoudCLuster",
+    "region" : "us-east-2",
+    "cloudProvider" : "AWS",
+    "kubernetesVersion" : "1.31",
+    "desiredNodeCount" : "1",
+    "minimumNodeCount" : "1",
+    "maximumNodeCount" : "2",
+    "instanceType" : "t2.medium",
+    "supportedFunctionTypes": ["Type1", "Type2"],
+    "amiType" : "AL2_x86_64",
+    "cloudCredentialUid" : ""
+  },
+  "LOCAL": {
+    "clusterName" : "MyLocalCluster",
+    "cloudProvider" : "LOCAL",
+    "supportedFunctionTypes": ["Type1", "Type2"],
+    "description" : "Local worker",
+    "apiServerEndpoint" : "",
+    "kubernetesAccessTokenUid" : "",
+    "hostUrl" : ""
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "createCluster" : "/api/workers/cluster/create",
+  "registerCluster" : "/api/workers/cluster/register"
+
+}
