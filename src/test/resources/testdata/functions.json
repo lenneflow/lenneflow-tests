@@ -1,5 +1,26 @@
 {
+  "dummyFunctionRandom":{
+    "name": "function-random",
+    "description": "random function",
+    "type": "Type1",
+    "packageRepository": "DOCKER_HUB",
+    "resourcePath": "/api/dummy/random",
+    "imageName": "lenneflow/dummy-function-random",
+    "lazyDeployment": false,
+    "servicePort": 8080,
+    "inputSchemaUid": "c0846810-2980-425e-83cd-618858f4f399",
+    "outputSchemaUid": "c0846810-2980-425e-83cd-618858f4f399"
+  },
   "dummyFunctionSleep": {
-
+    "name": "function-sleep",
+    "description": "sleep function",
+    "type": "Type2",
+    "packageRepository": "DOCKER_HUB",
+    "resourcePath": "/api/dummy/sleep",
+    "imageName": "lenneflow/dummy-function-sleep",
+    "lazyDeployment": false,
+    "servicePort": 8080,
+    "inputSchemaUid": "c0846810-2980-425e-83cd-618858f4f399",
+    "outputSchemaUid": "c0846810-2980-425e-83cd-618858f4f399"
   }
 }

@@ -1,0 +1,56 @@
+{
+  "while": {
+    "name" : "W1Step5",
+    "workflowUid" : "0aa6878d-f9a5-4b9a-ab74-8b46e642e258",
+    "description": "Step 5 of workflow 1",
+    "executionOrder" : 5,
+    "retryCount" : 0,
+    "functionUid" : "4ddded26-6c2a-4153-9f47-97564ecfc301",
+    "stopCondition": "[W1Step5.output.randomValue] > 150",
+    "inputData" : {
+      "minValue": 100,
+      "maxValue": 200
+    }
+  },
+  "simple": {
+    "name" : "W1Step5",
+    "workflowUid" : "0aa6878d-f9a5-4b9a-ab74-8b46e642e258",
+    "description": "Step 5 of workflow 1",
+    "executionOrder" : 5,
+    "retryCount" : 0,
+    "functionUid" : "4ddded26-6c2a-4153-9f47-97564ecfc301",
+    "inputData" : {
+      "minValue": 100,
+      "maxValue": 200
+    }
+  },
+  "switch": {
+    "name" : "W1Step3",
+    "workflowUid" : "0aa6878d-f9a5-4b9a-ab74-8b46e642e258",
+    "description": "Step 3 of workflow 1",
+    "executionOrder" : 3,
+    "retryCount" : 0,
+    "switchCase" : "[W1Step2.output.randomValue] > 10",
+    "decisionCases" : [
+      {
+        "name" : "true",
+        "functionId" : "4ddded26-6c2a-4153-9f47-97564ecfc301",
+        "retryCount" : 0,
+        "inputData" : {
+          "minValue": 0,
+          "maxValue": 100
+        }
+      },
+      {
+        "name" : "default",
+        "functionId" : "4ddded26-6c2a-4153-9f47-97564ecfc301",
+        "retryCount" : 0,
+        "inputData" : {
+          "minValue": 200,
+          "maxValue": 500
+        }
+      }
+
+    ]
+  }
+}
