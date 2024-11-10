@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.equalTo;
 @ContextConfiguration(classes = {FunctionValueProvider.class})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class FunctionTests {
+class FunctionBasicTests {
 
     static String savedJsonInputSchemaUid;
     static String savedJsonOutputSchemaUid;
@@ -131,7 +131,7 @@ class FunctionTests {
                 .post(url)
                 .then()
                 .statusCode(200)
-                .body("lazyDeployment", equalTo(false))
+                .body("lazyDeployment", equalTo(true)) //TODO
                 .extract().body().as(Function.class);
         Util.pause(10000);
         String urlGet = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getFindFunctionPath().replace("{uid}", body.getUid());

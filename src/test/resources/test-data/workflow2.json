@@ -1,0 +1,7 @@
+{
+  "name" : "workflow2",
+  "description": "sub workflow",
+  "timeOutInSeconds": "100000",
+  "inputDataSchemaUid": "",
+  "outputDataSchemaUid": ""
+}

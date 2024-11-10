@@ -44,16 +44,19 @@ public class TestDataGenerator {
         return localCluster;
     }
 
-    public Workflow generateWorkflow(String inputSchemaUid, String outputSchemaUid) throws IOException {
-        Workflow workflow = mapper.readValue(getClass().getResource("/test-data/workflow.json"), Workflow.class);
+    public Workflow generateWorkflow(String inputSchemaUid, String outputSchemaUid, String jsonFileName) throws IOException {
+        Workflow workflow = mapper.readValue(getClass().getResource("/test-data/" + jsonFileName), Workflow.class);
         workflow.setInputDataSchemaUid(inputSchemaUid);
         workflow.setOutputDataSchemaUid(outputSchemaUid);
         return workflow;
     }
 
-    public List<SimpleWorkflowStep> generateSimpleWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId) throws IOException {
+    public List<SimpleWorkflowStep> generateSimpleWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId, String jsonFileName) throws IOException {
         List<SimpleWorkflowStep> simpleWorkflowSteps = new ArrayList<>();
-        JsonNode node = mapper.readTree(getClass().getResource("/test-data/workflow-steps.json"));
+        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName));
+        if(node.get("simple") == null || node.get("simple").isNull() || node.get("simple").isEmpty()) {
+            return simpleWorkflowSteps;
+        }
         SimpleWorkflowStep[] steps = mapper.readValue(node.get("simple").toString(), SimpleWorkflowStep[].class);
         for(SimpleWorkflowStep step : steps) {
             step.setFunctionUid(step.getFunctionUid().replace("randomFunction", randomFunctionId).replace("sleepFunction", sleepFunctionId));
@@ -63,9 +66,12 @@ public class TestDataGenerator {
         return simpleWorkflowSteps;
     }
 
-    public List<WhileWorkflowStep> generateWhileWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId) throws IOException {
+    public List<WhileWorkflowStep> generateWhileWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId, String jsonFileName) throws IOException {
         List<WhileWorkflowStep> workflowSteps = new ArrayList<>();
-        JsonNode node = mapper.readTree(getClass().getResource("/test-data/workflow-steps.json"));
+        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName));
+        if(node.get("while") == null || node.get("while").isNull() || node.get("while").isEmpty()) {
+            return workflowSteps;
+        }
         WhileWorkflowStep[] steps = mapper.readValue(node.get("while").toString(), WhileWorkflowStep[].class);
         for(WhileWorkflowStep step : steps) {
             step.setFunctionUid(step.getFunctionUid().replace("randomFunction", randomFunctionId).replace("sleepFunction", sleepFunctionId));
@@ -75,10 +81,13 @@ public class TestDataGenerator {
         return workflowSteps;
     }
 
-    public List<SubWorkflowStep> generateSubWorkflowSteps(String workflowUid, String subWorkflowUid) throws IOException {
+    public List<SubWorkflowStep> generateSubWorkflowSteps(String workflowUid, String subWorkflowUid, String jsonFileName) throws IOException {
         List<SubWorkflowStep> workflowSteps = new ArrayList<>();
-        JsonNode node = mapper.readTree(getClass().getResource("/test-data/workflow-steps.json"));
-        SubWorkflowStep[] steps = mapper.readValue(node.get("while").toString(), SubWorkflowStep[].class);
+        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName));
+        if(node.get("sub-workflow") == null || node.get("sub-workflow").isNull() || node.get("sub-workflow").isEmpty()) {
+            return workflowSteps;
+        }
+        SubWorkflowStep[] steps = mapper.readValue(node.get("sub-workflow").toString(), SubWorkflowStep[].class);
         for(SubWorkflowStep step : steps) {
             step.setSubWorkflowUid(subWorkflowUid);
             step.setWorkflowUid(workflowUid);
@@ -87,9 +96,12 @@ public class TestDataGenerator {
         return workflowSteps;
     }
 
-    public List<SwitchWorkflowStep> generateSwitchWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId) throws IOException {
+    public List<SwitchWorkflowStep> generateSwitchWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId, String jsonFileName) throws IOException {
         List<SwitchWorkflowStep> workflowSteps = new ArrayList<>();
-        JsonNode node = mapper.readTree(getClass().getResource("/test-data/workflow-steps.json"));
+        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName));
+        if(node.get("switch") == null || node.get("switch").isNull() || node.get("switch").isEmpty()) {
+            return workflowSteps;
+        }
         SwitchWorkflowStep[] steps = mapper.readValue(node.get("switch").toString(), SwitchWorkflowStep[].class);
         for(SwitchWorkflowStep step : steps) {
             for (DecisionCase decisionCase : step.getDecisionCases()) {

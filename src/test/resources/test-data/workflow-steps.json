@@ -1,10 +1,24 @@
 {
-  "while": [
+  "sub-workflow": [
     {
       "name": "w1step3",
       "workflowUid": "",
-      "description": "Step 3 while",
+      "description": "Step 3 sub workflow",
       "executionOrder": 3,
+      "retryCount": 0,
+      "subWorkflowUid": "",
+      "inputData": {
+        "minValue": 100,
+        "maxValue": 200
+      }
+    }
+  ],
+  "while": [
+    {
+      "name": "w1step4",
+      "workflowUid": "",
+      "description": "Step 4 while",
+      "executionOrder": 4,
       "retryCount": 0,
       "functionUid": "randomFunction",
       "stopCondition": "[runCount] < 7",
@@ -40,10 +54,10 @@
       }
     },
     {
-      "name": "w1step5",
+      "name": "w1step6",
       "workflowUid": "",
-      "description": "Step 5",
-      "executionOrder": 5,
+      "description": "Step 6",
+      "executionOrder": 6,
       "retryCount": 0,
       "functionUid": "sleepFunction",
       "inputData": {
@@ -53,10 +67,10 @@
   ],
   "switch": [
     {
-      "name": "w1step4",
+      "name": "w1step5",
       "workflowUid": "",
-      "description": "Step 4 - switch",
-      "executionOrder": 4,
+      "description": "Step 5 - switch",
+      "executionOrder": 5,
       "retryCount": 0,
       "switchCase": "[w1step3.output.randomValue] > 150",
       "decisionCases": [

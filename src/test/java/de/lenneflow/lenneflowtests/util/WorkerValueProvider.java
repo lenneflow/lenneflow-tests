@@ -23,10 +23,10 @@ public class WorkerValueProvider {
     private String workerRootUrl;
 
     @Value("${lenneflow.local-cluster.api-server-endpoint}")
-    private String localClusterApiServerEndpoint;
+    private String localApiServerEndpointPath;
 
     @Value("${lenneflow.local-cluster.host-url}")
-    private String localClusterHostUrl;
+    private String localHostUrlPath;
 
     @Value("${resource.access-token.create}")
     private String createAccessTokenPath;
@@ -35,10 +35,22 @@ public class WorkerValueProvider {
     private String registerLocalClusterPath;
 
     @Value("${resource.cluster.find}")
-    private String findLocalClusterPath;
+    private String findClusterPath;
+
+    @Value("${resource.cluster.delete}")
+    private String deleteClusterPath;
+
+    @Value("${resource.cluster.find-all}")
+    private String findAllClustersPath;
 
     @Value("${resource.access-token.find}")
     private String findAccessTokenPath;
+
+    @Value("${resource.access-token.delete}")
+    private String deleteAccessTokenPath;
+
+    @Value("${resource.access-token.find-all}")
+    private String findAllAccessTokenPath;
 
 
 }

@@ -32,7 +32,7 @@ public class WorkflowValueProvider {
     private String deleteJsonSchemaPath;
 
     @Value("${resource.workflow.json-schema.find-all}")
-    private String findJsonSchemaList;
+    private String findJsonSchemaListPath;
 
     @Value("${resource.workflow.create}")
     private String createWorkflowPath;
@@ -44,7 +44,7 @@ public class WorkflowValueProvider {
     private String deleteWorkflowPath;
 
     @Value("${resource.workflow.find-all}")
-    private String findWorkflowListPath;
+    private String findAllWorkflowsPath;
 
     @Value("${resource.workflow.step.simple.create}")
     private String createSimpleWorkflowStepPath;
@@ -60,6 +60,9 @@ public class WorkflowValueProvider {
 
     @Value("${resource.workflow.step.find}")
     private String findWorkflowStepPath;
+
+    @Value("${resource.workflow.step.find-all}")
+    private String findAllWorkflowStepsPath;
 
     @Value("${resource.workflow.step.delete}")
     private String deleteWorkflowStepPath;

@@ -1,6 +1,7 @@
 package de.lenneflow.lenneflowtests.tests;
 
 import de.lenneflow.lenneflowtests.util.TestDataGenerator;
+import de.lenneflow.lenneflowtests.util.TestHelper;
 import de.lenneflow.lenneflowtests.util.Util;
 import de.lenneflow.lenneflowtests.util.WorkerValueProvider;
 import de.lenneflow.lenneflowtests.model.AccessToken;
@@ -21,13 +22,22 @@ import static org.hamcrest.Matchers.*;
 @ContextConfiguration(classes = {WorkerValueProvider.class})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class WorkerTests {
+class WorkerBasicTests {
 
     static String savedTokenUid;
     static String savedClusterUid;
 
+    final TestHelper testHelper = new TestHelper();
+
+
     @Autowired
     WorkerValueProvider workerValueProvider;
+
+    @BeforeAll
+    void setUp() {
+        testHelper.deleteAllAccessTokenTables(workerValueProvider);
+        testHelper.deleteAllClustersTables(workerValueProvider);
+    }
 
     @Test
     @Order(10)
@@ -64,7 +74,7 @@ class WorkerTests {
     @Test
     @Order(30)
     void testRegisterLocalCluster() throws IOException {
-        LocalCluster cluster = new TestDataGenerator().generateLocalClusterObject(savedTokenUid, workerValueProvider.getLocalClusterApiServerEndpoint(), workerValueProvider.getLocalClusterHostUrl());
+        LocalCluster cluster = new TestDataGenerator().generateLocalClusterObject(savedTokenUid, workerValueProvider.getLocalApiServerEndpointPath(), workerValueProvider.getLocalHostUrlPath());
         String url = workerValueProvider.getWorkerRootUrl() + workerValueProvider.getRegisterLocalClusterPath();
         LocalCluster body = given()
                 .body(cluster)
@@ -82,8 +92,8 @@ class WorkerTests {
     @Test
     @Order(40)
     void testGetLocalCluster() throws IOException {
-        LocalCluster cluster = new TestDataGenerator().generateLocalClusterObject(savedTokenUid, workerValueProvider.getLocalClusterApiServerEndpoint(), workerValueProvider.getLocalClusterHostUrl());
-        String url = workerValueProvider.getWorkerRootUrl() + workerValueProvider.getFindLocalClusterPath().replace("{uid}", savedClusterUid);
+        LocalCluster cluster = new TestDataGenerator().generateLocalClusterObject(savedTokenUid, workerValueProvider.getLocalApiServerEndpointPath(), workerValueProvider.getLocalHostUrlPath());
+        String url = workerValueProvider.getWorkerRootUrl() + workerValueProvider.getFindClusterPath().replace("{uid}", savedClusterUid);
         given()
                 .when()
                 .get(url)
