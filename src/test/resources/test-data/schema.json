@@ -1,0 +1,26 @@
+{
+  "sleepOutputSchema": {
+    "name": "sleepOutputSchema",
+    "description": "Output schema for sleep function",
+    "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"type\": \"object\",\"properties\": {\"sleepTimeInMillis\": {\"type\": \"integer\"},\"sleepTimeInSeconds\": {\"type\": \"integer\"}},\"required\": [\"sleepTimeInMillis\",\"sleepTimeInSeconds\"]}",
+    "schemaVersion": "V4"
+  },
+  "sleepInputSchema": {
+    "name": "sleepInputSchema",
+    "description": "Input schema for sleep function",
+    "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"type\": \"object\",\"properties\": {\"sleepTimeInSeconds\": {\"type\": \"integer\"}},\"required\": [\"sleepTimeInSeconds\"]}",
+    "schemaVersion": "V4"
+  },
+  "randomOutputSchema": {
+    "name": "randomOutputSchema",
+    "description": "A global, output schema",
+    "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"type\": \"object\",\"properties\": {\"runStatus\": {\"type\": \"string\"},\"outputData\": {\"type\": \"object\",\"properties\": {\"randomValue\": {\"type\": \"integer\"}},\"required\": [\"randomValue\"]}},\"required\": [\"runStatus\",\"outputData\"]}",
+    "schemaVersion": "V4"
+  },
+  "randomInputSchema": {
+    "name": "randomInputSchema",
+    "description": "A global, input schema",
+    "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"type\": \"object\",\"properties\":{\"callBackUrl\": {\"type\": \"string\"},\"inputData\": {\"type\": \"object\",\"properties\": {\"minValue\": {\"type\": \"integer\"},\"maxValue\": {\"type\": \"integer\"}},\"required\": [\"minValue\",\"maxValue\"]}},\"required\": [\"callBackUrl\",\"inputData\"]}",
+    "schemaVersion": "V4"
+  }
+}

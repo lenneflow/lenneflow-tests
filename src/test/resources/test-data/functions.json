@@ -8,8 +8,8 @@
     "imageName": "lenneflow/dummy-function-random",
     "lazyDeployment": false,
     "servicePort": 8080,
-    "inputSchemaUid": "c0846810-2980-425e-83cd-618858f4f399",
-    "outputSchemaUid": "c0846810-2980-425e-83cd-618858f4f399"
+    "inputSchemaUid": "",
+    "outputSchemaUid": ""
   },
   "dummyFunctionSleep": {
     "name": "function-sleep",
@@ -20,7 +20,7 @@
     "imageName": "lenneflow/dummy-function-sleep",
     "lazyDeployment": false,
     "servicePort": 8080,
-    "inputSchemaUid": "c0846810-2980-425e-83cd-618858f4f399",
-    "outputSchemaUid": "c0846810-2980-425e-83cd-618858f4f399"
+    "inputSchemaUid": "",
+    "outputSchemaUid": ""
   }
 }

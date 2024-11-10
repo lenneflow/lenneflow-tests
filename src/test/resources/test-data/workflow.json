@@ -1,0 +1,7 @@
+{
+  "name" : "workflow1",
+  "description": "workflow test with switch",
+  "timeOutInSeconds": "100000",
+  "inputDataSchemaUid": "",
+  "outputDataSchemaUid": ""
+}

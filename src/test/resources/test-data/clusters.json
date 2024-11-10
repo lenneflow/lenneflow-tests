@@ -14,7 +14,6 @@
   },
   "LOCAL": {
     "clusterName" : "MyLocalCluster",
-    "cloudProvider" : "LOCAL",
     "supportedFunctionTypes": ["Type1", "Type2"],
     "description" : "Local worker",
     "apiServerEndpoint" : "",

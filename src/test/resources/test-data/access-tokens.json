@@ -1,0 +1,5 @@
+{
+  "description": "Token of my local k8s",
+  "token": "",
+  "expiration": "31.12.2099"
+}
