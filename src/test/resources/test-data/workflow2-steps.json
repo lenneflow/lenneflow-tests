@@ -7,7 +7,7 @@
       "executionOrder": 3,
       "retryCount": 0,
       "functionUid": "randomFunction",
-      "stopCondition": "[runCount] < 2",
+      "stopCondition": "[runCount] > 2",
       "inputData": {
         "minValue": 100,
         "maxValue": 200
@@ -45,9 +45,10 @@
       "description": "Step 4",
       "executionOrder": 4,
       "retryCount": 0,
-      "functionUid": "sleepFunction",
+      "functionUid": "randomFunction",
       "inputData": {
-        "sleepTimeInMillis": 10000
+        "minValue": 50,
+        "maxValue": 150
       }
     }
   ]

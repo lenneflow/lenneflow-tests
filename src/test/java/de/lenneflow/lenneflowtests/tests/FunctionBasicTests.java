@@ -122,7 +122,7 @@ class FunctionBasicTests {
     void testCreateNotLazyFunction() throws IOException {
         JsonSchema inputSchema = testHelper.createJsonSchema(functionValueProvider, "sleepInputSchema");
         JsonSchema outputSchema = testHelper.createJsonSchema(functionValueProvider, "sleepOutputSchema");
-        Function function = new TestDataGenerator().generateFunction("dummyFunctionSleep", inputSchema.getUid(), outputSchema.getUid(), true);
+        Function function = new TestDataGenerator().generateFunction("dummyFunctionSleep", inputSchema.getUid(), outputSchema.getUid(), false);
         String url = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getCreateFunctionPath();
         Function body = given()
                 .body(function)
@@ -131,9 +131,9 @@ class FunctionBasicTests {
                 .post(url)
                 .then()
                 .statusCode(200)
-                .body("lazyDeployment", equalTo(true)) //TODO
+                .body("lazyDeployment", equalTo(false))
                 .extract().body().as(Function.class);
-        Util.pause(10000);
+        Util.pause(30000);
         String urlGet = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getFindFunctionPath().replace("{uid}", body.getUid());
         given()
                 .when()

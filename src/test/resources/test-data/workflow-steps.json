@@ -21,7 +21,7 @@
       "executionOrder": 4,
       "retryCount": 0,
       "functionUid": "randomFunction",
-      "stopCondition": "[runCount] < 7",
+      "stopCondition": "[runCount] > 7",
       "inputData": {
         "minValue": 100,
         "maxValue": 200
@@ -59,9 +59,10 @@
       "description": "Step 6",
       "executionOrder": 6,
       "retryCount": 0,
-      "functionUid": "sleepFunction",
+      "functionUid": "randomFunction",
       "inputData": {
-        "sleepTimeInMillis": 10000
+        "minValue": 15,
+        "maxValue": 115
       }
     }
   ],
@@ -85,10 +86,11 @@
         },
         {
           "name": "default",
-          "functionUid": "sleepFunction",
+          "functionUid": "randomFunction",
           "retryCount": 0,
           "inputData": {
-            "sleepTimeInMillis": 10000
+            "minValue": 75,
+            "maxValue": 100
           }
         }
       ]

@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
 
 
 public class TestHelper {
