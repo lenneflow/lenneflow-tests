@@ -57,7 +57,7 @@ class WorkflowBasicTests {
                 .body("name", equalTo(inputSchema.getName()))
                 .extract().body().as(JsonSchema.class);
         savedJsonInputSchemaUid = body.getUid();
-        Util.pause(1000);
+        testHelper.pause(1000);
 
         JsonSchema body2 = given()
                 .body(outputSchema)
@@ -69,7 +69,7 @@ class WorkflowBasicTests {
                 .body("schemaVersion", equalTo(outputSchema.getSchemaVersion().name()))
                 .extract().body().as(JsonSchema.class);
         savedJsonOutputSchemaUid = body2.getUid();
-        Util.pause(1000);
+        testHelper.pause(1000);
     }
 
     @Test
@@ -101,7 +101,7 @@ class WorkflowBasicTests {
                 .body("description", equalTo(workflow.getDescription()))
                 .extract().body().as(Workflow.class);
         savedWorkflowUid = body.getUid();
-        Util.pause(1000);
+        testHelper.pause(1000);
     }
 
     @Test
@@ -123,7 +123,7 @@ class WorkflowBasicTests {
     void testCreateSimpleWorkflowSteps() throws IOException {
         Function randomFunction = testHelper.findFunction(functionValueProvider, "function-random");
         Function sleepFunction = testHelper.findFunction(functionValueProvider, "function-sleep");
-        List<SimpleWorkflowStep> workflowSteps = new TestDataGenerator().generateSimpleWorkflowSteps(savedWorkflowUid, randomFunction.getUid(), sleepFunction.getUid(),"workflow-steps.json");
+        List<SimpleWorkflowStep> workflowSteps = new TestDataGenerator().generateSimpleWorkflowSteps(savedWorkflowUid, randomFunction.getUid(), sleepFunction.getUid(),"workflow.json");
         for (SimpleWorkflowStep step : workflowSteps) {
             String url = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getCreateSimpleWorkflowStepPath();
             given()
@@ -134,7 +134,7 @@ class WorkflowBasicTests {
                     .then()
                     .statusCode(200)
                     .body("name", equalTo(step.getName()));
-            Util.pause(1000);
+            testHelper.pause(1000);
         }
     }
 
@@ -143,7 +143,7 @@ class WorkflowBasicTests {
     void testCreateSwitchWorkflowSteps() throws IOException {
         Function randomFunction = testHelper.findFunction(functionValueProvider, "function-random");
         Function sleepFunction = testHelper.findFunction(functionValueProvider, "function-sleep");
-        List<SwitchWorkflowStep> workflowSteps = new TestDataGenerator().generateSwitchWorkflowSteps(savedWorkflowUid, randomFunction.getUid(), sleepFunction.getUid(),"workflow-steps.json");
+        List<SwitchWorkflowStep> workflowSteps = new TestDataGenerator().generateSwitchWorkflowSteps(savedWorkflowUid, randomFunction.getUid(), sleepFunction.getUid(),"workflow.json");
         for (SwitchWorkflowStep step : workflowSteps) {
             String url = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getCreateSwitchWorkflowStepPath();
             given()
@@ -154,7 +154,7 @@ class WorkflowBasicTests {
                     .then()
                     .statusCode(200)
                     .body("name", equalTo(step.getName()));
-            Util.pause(1000);
+            testHelper.pause(1000);
         }
     }
 
@@ -163,7 +163,7 @@ class WorkflowBasicTests {
     void testCreateWhileWorkflowSteps() throws IOException {
         Function randomFunction = testHelper.findFunction(functionValueProvider, "function-random");
         Function sleepFunction = testHelper.findFunction(functionValueProvider, "function-sleep");
-        List<WhileWorkflowStep> workflowSteps = new TestDataGenerator().generateWhileWorkflowSteps(savedWorkflowUid, randomFunction.getUid(), sleepFunction.getUid(),"workflow-steps.json");
+        List<WhileWorkflowStep> workflowSteps = new TestDataGenerator().generateWhileWorkflowSteps(savedWorkflowUid, randomFunction.getUid(), sleepFunction.getUid(),"workflow.json");
         for (WhileWorkflowStep step : workflowSteps) {
             String url = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getCreateWhileWorkflowStepPath();
             given()
@@ -174,7 +174,7 @@ class WorkflowBasicTests {
                     .then()
                     .statusCode(200)
                     .body("name", equalTo(step.getName()));
-            Util.pause(1000);
+            testHelper.pause(1000);
         }
     }
 
@@ -183,8 +183,8 @@ class WorkflowBasicTests {
     void testCreateSubWorkflowSteps() throws IOException {
         testHelper.createWorkflow(workflowValueProvider, savedJsonInputSchemaUid, savedJsonOutputSchemaUid, "workflow2.json");
         Workflow subWorkflow = testHelper.findWorkflow(workflowValueProvider, "workflow2");
-        testHelper.createWorkflowSteps(workflowValueProvider,functionValueProvider,subWorkflow.getUid(),"workflow2-steps.json");
-        List<SubWorkflowStep> workflowSteps = new TestDataGenerator().generateSubWorkflowSteps(savedWorkflowUid, subWorkflow.getUid(), "workflow-steps.json");
+        testHelper.createWorkflowSteps(workflowValueProvider,functionValueProvider,subWorkflow.getUid(),"workflow2.json");
+        List<SubWorkflowStep> workflowSteps = new TestDataGenerator().generateSubWorkflowSteps(savedWorkflowUid, subWorkflow.getUid(), "workflow.json");
         for (SubWorkflowStep step : workflowSteps) {
             String url = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getCreateSubWorkflowStepPath();
             given()
@@ -195,7 +195,7 @@ class WorkflowBasicTests {
                     .then()
                     .statusCode(200)
                     .body("name", equalTo(step.getName()));
-            Util.pause(1000);
+            testHelper.pause(1000);
         }
     }
 

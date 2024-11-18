@@ -5,7 +5,6 @@ import de.lenneflow.lenneflowtests.model.JsonSchema;
 import de.lenneflow.lenneflowtests.util.FunctionValueProvider;
 import de.lenneflow.lenneflowtests.util.TestDataGenerator;
 import de.lenneflow.lenneflowtests.util.TestHelper;
-import de.lenneflow.lenneflowtests.util.Util;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -57,7 +56,7 @@ class FunctionBasicTests {
                 .body("name", equalTo(inputSchema.getName()))
                 .extract().body().as(JsonSchema.class);
         savedJsonInputSchemaUid = body.getUid();
-        Util.pause(1000);
+        testHelper.pause(1000);
 
         JsonSchema body2 = given()
                 .body(outputSchema)
@@ -69,7 +68,7 @@ class FunctionBasicTests {
                 .body("schemaVersion", equalTo(outputSchema.getSchemaVersion().name()))
                 .extract().body().as(JsonSchema.class);
         savedJsonOutputSchemaUid = body2.getUid();
-        Util.pause(1000);
+        testHelper.pause(1000);
     }
 
     @Test
@@ -101,7 +100,7 @@ class FunctionBasicTests {
                 .body("deploymentState", equalTo("UNDEPLOYED"))
                 .extract().body().as(Function.class);
         savedFunctionUid = body.getUid();
-        Util.pause(1000);
+        testHelper.pause(1000);
     }
 
     @Test
@@ -133,7 +132,7 @@ class FunctionBasicTests {
                 .statusCode(200)
                 .body("lazyDeployment", equalTo(false))
                 .extract().body().as(Function.class);
-        Util.pause(30000);
+        testHelper.pause(30000);
         String urlGet = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getFindFunctionPath().replace("{uid}", body.getUid());
         given()
                 .when()

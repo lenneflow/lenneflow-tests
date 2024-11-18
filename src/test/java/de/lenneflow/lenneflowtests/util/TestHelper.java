@@ -143,7 +143,7 @@ public class TestHelper {
                     .post(url)
                     .then()
                     .statusCode(200);
-            Util.pause(1000);
+            pause(1000);
         }
         //Switch steps
         List<SwitchWorkflowStep> switchSteps = new TestDataGenerator().generateSwitchWorkflowSteps(workflowUid, randomFunction.getUid(), sleepFunction.getUid(), jsonFileName);
@@ -156,7 +156,7 @@ public class TestHelper {
                     .post(url)
                     .then()
                     .statusCode(200);
-            Util.pause(1000);
+            pause(1000);
         }
         //While Steps
         List<WhileWorkflowStep> whileSteps = new TestDataGenerator().generateWhileWorkflowSteps(workflowUid, randomFunction.getUid(), sleepFunction.getUid(), jsonFileName);
@@ -169,7 +169,7 @@ public class TestHelper {
                     .post(url)
                     .then()
                     .statusCode(200);
-            Util.pause(1000);
+            pause(1000);
         }
     }
 
@@ -212,5 +212,13 @@ public class TestHelper {
                 return workflow;
         }
         return null;
+    }
+
+    public void pause(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

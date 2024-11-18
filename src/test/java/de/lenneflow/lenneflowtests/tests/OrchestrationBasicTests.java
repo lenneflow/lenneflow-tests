@@ -48,7 +48,7 @@ class OrchestrationBasicTests {
                 .body("runStatus", equalTo(RunStatus.RUNNING.toString()))
                 .extract().body().as(WorkflowExecution.class);
         savedWorkflowInstanceUid = body.getRunUid();
-        Util.pause(5000);
+        testHelper.pause(10000);
 
         String stateUrlWorkflow = orchestrationValueProvider.getOrchestrationRootUrl() + orchestrationValueProvider.getWorkflowStatePath().replace("{uid}", savedWorkflowInstanceUid);
         given()

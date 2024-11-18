@@ -2,7 +2,6 @@ package de.lenneflow.lenneflowtests.tests;
 
 import de.lenneflow.lenneflowtests.util.TestDataGenerator;
 import de.lenneflow.lenneflowtests.util.TestHelper;
-import de.lenneflow.lenneflowtests.util.Util;
 import de.lenneflow.lenneflowtests.util.WorkerValueProvider;
 import de.lenneflow.lenneflowtests.model.AccessToken;
 import de.lenneflow.lenneflowtests.model.LocalCluster;
@@ -55,7 +54,7 @@ class WorkerBasicTests {
                 .extract().body().as(AccessToken.class);
         System.out.println(body.getUid());
         savedTokenUid = body.getUid();
-        Util.pause(1000);
+        testHelper.pause(1000);
     }
 
     @Test
@@ -86,7 +85,7 @@ class WorkerBasicTests {
                 .body("hostUrl", equalTo(cluster.getHostUrl()))
                 .extract().body().as(LocalCluster.class);
         savedClusterUid = body.getUid();
-        Util.pause(1000);
+        testHelper.pause(1000);
     }
 
     @Test

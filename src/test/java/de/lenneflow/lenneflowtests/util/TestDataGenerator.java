@@ -45,7 +45,8 @@ public class TestDataGenerator {
     }
 
     public Workflow generateWorkflow(String inputSchemaUid, String outputSchemaUid, String jsonFileName) throws IOException {
-        Workflow workflow = mapper.readValue(getClass().getResource("/test-data/" + jsonFileName), Workflow.class);
+        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName));
+        Workflow workflow = mapper.readValue(node.get("workflow").toString(), Workflow.class);
         workflow.setInputDataSchemaUid(inputSchemaUid);
         workflow.setOutputDataSchemaUid(outputSchemaUid);
         return workflow;
@@ -53,7 +54,7 @@ public class TestDataGenerator {
 
     public List<SimpleWorkflowStep> generateSimpleWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId, String jsonFileName) throws IOException {
         List<SimpleWorkflowStep> simpleWorkflowSteps = new ArrayList<>();
-        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName));
+        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName)).get("steps");
         if(node.get("simple") == null || node.get("simple").isNull() || node.get("simple").isEmpty()) {
             return simpleWorkflowSteps;
         }
@@ -68,7 +69,7 @@ public class TestDataGenerator {
 
     public List<WhileWorkflowStep> generateWhileWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId, String jsonFileName) throws IOException {
         List<WhileWorkflowStep> workflowSteps = new ArrayList<>();
-        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName));
+        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName)).get("steps");
         if(node.get("while") == null || node.get("while").isNull() || node.get("while").isEmpty()) {
             return workflowSteps;
         }
@@ -83,7 +84,7 @@ public class TestDataGenerator {
 
     public List<SubWorkflowStep> generateSubWorkflowSteps(String workflowUid, String subWorkflowUid, String jsonFileName) throws IOException {
         List<SubWorkflowStep> workflowSteps = new ArrayList<>();
-        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName));
+        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName)).get("steps");
         if(node.get("sub-workflow") == null || node.get("sub-workflow").isNull() || node.get("sub-workflow").isEmpty()) {
             return workflowSteps;
         }
@@ -98,7 +99,7 @@ public class TestDataGenerator {
 
     public List<SwitchWorkflowStep> generateSwitchWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId, String jsonFileName) throws IOException {
         List<SwitchWorkflowStep> workflowSteps = new ArrayList<>();
-        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName));
+        JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName)).get("steps");
         if(node.get("switch") == null || node.get("switch").isNull() || node.get("switch").isEmpty()) {
             return workflowSteps;
         }
