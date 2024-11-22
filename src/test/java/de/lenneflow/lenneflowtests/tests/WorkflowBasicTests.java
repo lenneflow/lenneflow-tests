@@ -198,11 +198,4 @@ class WorkflowBasicTests {
             testHelper.pause(1000);
         }
     }
-
-    @Test
-    @Order(90)
-    void testStepsInWorkflow() throws IOException {
-
-    }
-
 }

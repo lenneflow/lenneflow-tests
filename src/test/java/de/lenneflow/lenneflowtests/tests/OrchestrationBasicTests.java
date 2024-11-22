@@ -1,6 +1,7 @@
 package de.lenneflow.lenneflowtests.tests;
 
 import de.lenneflow.lenneflowtests.enums.RunStatus;
+import de.lenneflow.lenneflowtests.model.JsonSchema;
 import de.lenneflow.lenneflowtests.model.Workflow;
 import de.lenneflow.lenneflowtests.model.WorkflowExecution;
 import de.lenneflow.lenneflowtests.util.*;
@@ -10,12 +11,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
+import java.io.IOException;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 @TestPropertySource("classpath:application.properties")
 @SpringBootTest
-@ContextConfiguration(classes = {WorkflowValueProvider.class, OrchestrationValueProvider.class})
+@ContextConfiguration(classes = {WorkflowValueProvider.class, OrchestrationValueProvider.class, FunctionValueProvider.class})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class OrchestrationBasicTests {
@@ -30,6 +33,9 @@ class OrchestrationBasicTests {
 
     @Autowired
     WorkflowValueProvider workflowValueProvider;
+
+    @Autowired
+    FunctionValueProvider functionValueProvider;
 
     @BeforeAll
     void setUp() {
@@ -56,6 +62,26 @@ class OrchestrationBasicTests {
                 .then()
                 .statusCode(200)
                 .body("runStatus", equalTo(RunStatus.COMPLETED.toString()));
+    }
+
+
+    @Test
+    @Order(90)
+    void testHorizontalPodScaling() throws IOException {
+        JsonSchema inputSchema = testHelper.createJsonSchema(functionValueProvider, "randomInputSchema");
+        JsonSchema outputSchema = testHelper.createJsonSchema(functionValueProvider, "randomOutputSchema");
+        Workflow workflow = testHelper.createWorkflow(workflowValueProvider, inputSchema.getUid(), outputSchema.getUid(), "workflow3.json");
+        testHelper.createWorkflowSteps(workflowValueProvider, functionValueProvider, workflow.getUid(), "workflow3.json");
+        String url = orchestrationValueProvider.getOrchestrationRootUrl() + orchestrationValueProvider.getStartWorkflowPath().replace("{uid}", workflow.getUid());
+        WorkflowExecution body = given()
+                .get(url)
+                .then()
+                .statusCode(200)
+                .body("runStatus", equalTo(RunStatus.RUNNING.toString()))
+                .extract().body().as(WorkflowExecution.class);
+        String runId = body.getRunUid();
+
+        //Pods count checks
 
     }
 

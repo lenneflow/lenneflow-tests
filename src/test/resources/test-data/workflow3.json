@@ -1,0 +1,47 @@
+{
+  "workflow": {
+    "name": "workflow3",
+    "description": "workflow to test the scaling functionalities",
+    "timeOutInSeconds": "100000",
+    "inputDataSchemaUid": "",
+    "outputDataSchemaUid": ""
+  },
+  "steps": {
+    "simple": [
+      {
+        "name": "w3step1",
+        "workflowUid": "",
+        "description": "Step 1",
+        "executionOrder": 1,
+        "retryCount": 0,
+        "functionUid": "fullcpuFunction",
+        "inputData": {
+          "durationInSeconds": 60
+        }
+      },
+      {
+        "name": "w3step2",
+        "workflowUid": "",
+        "description": "Step  2",
+        "executionOrder": 2,
+        "retryCount": 0,
+        "functionUid": "sleepFunction",
+        "inputData": {
+          "sleepTimeInMillis": 60000
+        }
+      },
+      {
+        "name": "w3step3",
+        "workflowUid": "",
+        "description": "Step 3",
+        "executionOrder": 3,
+        "retryCount": 0,
+        "functionUid": "randomFunction",
+        "inputData": {
+          "minValue": 50,
+          "maxValue": 150
+        }
+      }
+    ]
+  }
+}

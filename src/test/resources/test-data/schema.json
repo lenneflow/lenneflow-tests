@@ -8,19 +8,31 @@
   "sleepInputSchema": {
     "name": "sleepInputSchema",
     "description": "Input schema for sleep function",
-    "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"type\": \"object\",\"properties\": {\"sleepTimeInSeconds\": {\"type\": \"integer\"}},\"required\": [\"sleepTimeInSeconds\"]}",
+    "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"type\": \"object\",\"properties\": {\"sleepTimeInMillis\": {\"type\": \"integer\"}},\"required\": [\"sleepTimeInSeconds\"]}",
     "schemaVersion": "V4"
   },
   "randomOutputSchema": {
     "name": "randomOutputSchema",
     "description": "A global, output schema",
-    "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"type\": \"object\",\"properties\": {\"runStatus\": {\"type\": \"string\"},\"outputData\": {\"type\": \"object\",\"properties\": {\"randomValue\": {\"type\": \"integer\"}},\"required\": [\"randomValue\"]}},\"required\": [\"runStatus\",\"outputData\"]}",
+    "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"type\": \"object\",\"properties\":{\"outputData\": {\"type\": \"object\",\"properties\": {\"randomValue\": {\"type\": \"integer\"}},\"required\": [\"randomValue\"]}},\"required\": [\"outputData\"]}",
     "schemaVersion": "V4"
   },
   "randomInputSchema": {
     "name": "randomInputSchema",
     "description": "A global, input schema",
-    "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"type\": \"object\",\"properties\":{\"callBackUrl\": {\"type\": \"string\"},\"inputData\": {\"type\": \"object\",\"properties\": {\"minValue\": {\"type\": \"integer\"},\"maxValue\": {\"type\": \"integer\"}},\"required\": [\"minValue\",\"maxValue\"]}},\"required\": [\"callBackUrl\",\"inputData\"]}",
+    "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"type\": \"object\",\"properties\":{\"inputData\": {\"type\": \"object\",\"properties\": {\"minValue\": {\"type\": \"integer\"},\"maxValue\": {\"type\": \"integer\"}},\"required\": [\"minValue\",\"maxValue\"]}},\"required\": [\"inputData\"]}",
+    "schemaVersion": "V4"
+  },
+  "fullcpuInputSchema": {
+    "name": "fullcpuInputSchema",
+    "description": "Input schema for full cpu function",
+    "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"type\": \"object\",\"properties\": {\"durationInSeconds\": {\"type\": \"integer\"}},\"required\": [\"durationInSeconds\"]}",
+    "schemaVersion": "V4"
+  },
+  "fullcpuOutputSchema": {
+    "name": "fullcpuOutputSchema",
+    "description": "Output schema for full cpu function",
+    "schema": "{\"$schema\": \"http://json-schema.org/draft-04/schema#\",\"type\": \"object\",\"properties\": {\"durationInSeconds\": {\"type\": \"integer\"}},\"required\": [\"durationInSeconds\"]}",
     "schemaVersion": "V4"
   }
 }
