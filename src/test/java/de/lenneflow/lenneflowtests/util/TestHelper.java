@@ -58,7 +58,7 @@ public class TestHelper {
     }
 
     public void deleteAllFunctionsJsonSchema(FunctionValueProvider functionValueProvider) {
-        String findListUrl = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getFindJsonSchemaList();
+        String findListUrl = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getFindJsonSchemaListPath();
         String deleteUrl = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getDeleteJsonSchemaPath();
         JsonSchema[] schemaList = given()
                 .when()
@@ -117,6 +117,50 @@ public class TestHelper {
         }
     }
 
+    public void deleteWorkflowByName(WorkflowValueProvider workflowValueProvider, String workflowName) {
+        String findListUrl = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getFindAllWorkflowsPath();
+        String deleteUrl = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getDeleteWorkflowPath();
+        Workflow[] workflows = given()
+                .when()
+                .get(findListUrl)
+                .then()
+                .extract().body().as(Workflow[].class);
+        for (Workflow workflow : workflows) {
+            if(workflow.getName().equalsIgnoreCase(workflowName)) {
+                given()
+                        .when()
+                        .delete(deleteUrl.replace("{uid}", workflow.getUid()));
+            }
+        }
+    }
+
+    public void deleteWorkflowStepsByWorkflowName(WorkflowValueProvider workflowValueProvider, String workflowName){
+        String findListUrl = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getFindAllWorkflowsPath();
+        String findStepListUrl = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getFindAllWorkflowStepsPath();
+        String deleteStepUrl = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getDeleteWorkflowStepPath();
+        Workflow[] workflows = given()
+                .when()
+                .get(findListUrl)
+                .then()
+                .extract().body().as(Workflow[].class);
+        for (Workflow workflow : workflows) {
+            if(workflow.getName().equalsIgnoreCase(workflowName)) {
+                WorkflowStep[] steps = given()
+                        .when()
+                        .get(findStepListUrl)
+                        .then()
+                        .extract().body().as(WorkflowStep[].class);
+                for (WorkflowStep step : steps) {
+                    if(step.getWorkflowUid().equalsIgnoreCase(workflow.getUid())) {
+                        given()
+                                .when()
+                                .delete(deleteStepUrl.replace("{uid}", step.getUid()));
+                    }
+                }
+            }
+        }
+    }
+
     public Workflow createWorkflow(WorkflowValueProvider workflowValueProvider, String inputSchemaUid, String outputSchemaUid, String jsonFileName) throws IOException {
         Workflow workflow = new TestDataGenerator().generateWorkflow(inputSchemaUid, outputSchemaUid, jsonFileName);
         String url = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getCreateWorkflowPath();
@@ -126,6 +170,7 @@ public class TestHelper {
                 .when()
                 .post(url)
                 .then()
+                .statusCode(200)
                 .extract().body().as(Workflow.class);
     }
 
@@ -174,9 +219,21 @@ public class TestHelper {
     }
 
 
-    public JsonSchema createJsonSchema(FunctionValueProvider functionValueProvider, String schemaName) throws IOException {
+    public JsonSchema createFunctionJsonSchema(FunctionValueProvider functionValueProvider, String schemaName) throws IOException {
         JsonSchema inputSchema = new TestDataGenerator().generateFunctionJsonSchema(schemaName);
         String url = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getCreateJsonSchemaPath();
+        return given()
+                .body(inputSchema)
+                .contentType("application/json")
+                .when()
+                .post(url)
+                .then()
+                .extract().body().as(JsonSchema.class);
+    }
+
+    public JsonSchema createWorkflowJsonSchema(WorkflowValueProvider workflowValueProvider, String schemaName) throws IOException {
+        JsonSchema inputSchema = new TestDataGenerator().generateFunctionJsonSchema(schemaName);
+        String url = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getCreateJsonSchemaPath();
         return given()
                 .body(inputSchema)
                 .contentType("application/json")

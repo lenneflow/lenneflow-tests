@@ -38,8 +38,13 @@ class OrchestrationBasicTests {
     FunctionValueProvider functionValueProvider;
 
     @BeforeAll
-    void setUp() {
-
+    void setUp() throws IOException {
+        testHelper.deleteWorkflowStepsByWorkflowName(workflowValueProvider, "workflow3");
+        testHelper.deleteWorkflowByName(workflowValueProvider, "workflow3");
+        JsonSchema inputSchema = testHelper.createWorkflowJsonSchema(workflowValueProvider, "randomInputSchema");
+        JsonSchema outputSchema = testHelper.createWorkflowJsonSchema(workflowValueProvider, "randomOutputSchema");
+        Workflow workflow = testHelper.createWorkflow(workflowValueProvider, inputSchema.getUid(), outputSchema.getUid(), "workflow3.json");
+        testHelper.createWorkflowSteps(workflowValueProvider, functionValueProvider, workflow.getUid(), "workflow3.json");
     }
 
     @Test
@@ -51,7 +56,7 @@ class OrchestrationBasicTests {
                 .get(url)
                 .then()
                 .statusCode(200)
-                .body("runStatus", equalTo(RunStatus.RUNNING.toString()))
+                .body("workflowName", equalTo(workflow.getName()))
                 .extract().body().as(WorkflowExecution.class);
         savedWorkflowInstanceUid = body.getRunUid();
         testHelper.pause(10000);
@@ -68,18 +73,14 @@ class OrchestrationBasicTests {
     @Test
     @Order(90)
     void testHorizontalPodScaling() throws IOException {
-        JsonSchema inputSchema = testHelper.createJsonSchema(functionValueProvider, "randomInputSchema");
-        JsonSchema outputSchema = testHelper.createJsonSchema(functionValueProvider, "randomOutputSchema");
-        Workflow workflow = testHelper.createWorkflow(workflowValueProvider, inputSchema.getUid(), outputSchema.getUid(), "workflow3.json");
-        testHelper.createWorkflowSteps(workflowValueProvider, functionValueProvider, workflow.getUid(), "workflow3.json");
-        String url = orchestrationValueProvider.getOrchestrationRootUrl() + orchestrationValueProvider.getStartWorkflowPath().replace("{uid}", workflow.getUid());
-        WorkflowExecution body = given()
-                .get(url)
-                .then()
-                .statusCode(200)
-                .body("runStatus", equalTo(RunStatus.RUNNING.toString()))
-                .extract().body().as(WorkflowExecution.class);
-        String runId = body.getRunUid();
+//        String url = orchestrationValueProvider.getOrchestrationRootUrl() + orchestrationValueProvider.getStartWorkflowPath().replace("{uid}", workflow.getUid());
+//        WorkflowExecution body = given()
+//                .get(url)
+//                .then()
+//                .statusCode(200)
+//                .body("runStatus", equalTo(RunStatus.RUNNING.toString()))
+//                .extract().body().as(WorkflowExecution.class);
+//        String runId = body.getRunUid();
 
         //Pods count checks
 

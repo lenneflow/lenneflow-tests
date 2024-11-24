@@ -44,7 +44,13 @@ public class FunctionValueProvider {
     private String deleteJsonSchemaPath;
 
     @Value("${resource.function.json-schema.find-all}")
-    private String findJsonSchemaList;
+    private String findJsonSchemaListPath;
+
+    @Value("${resource.function.deploy}")
+    private String deployFunctionPath;
+
+    @Value("${resource.function.undeploy}")
+    private String unDeployFunctionPath;
 
 
 }

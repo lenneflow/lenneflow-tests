@@ -119,8 +119,8 @@ class FunctionBasicTests {
     @Test
     @Order(50)
     void testCreateNotLazyFunction() throws IOException {
-        JsonSchema inputSchema = testHelper.createJsonSchema(functionValueProvider, "sleepInputSchema");
-        JsonSchema outputSchema = testHelper.createJsonSchema(functionValueProvider, "sleepOutputSchema");
+        JsonSchema inputSchema = testHelper.createFunctionJsonSchema(functionValueProvider, "sleepInputSchema");
+        JsonSchema outputSchema = testHelper.createFunctionJsonSchema(functionValueProvider, "sleepOutputSchema");
         Function function = new TestDataGenerator().generateFunction("dummyFunctionSleep", inputSchema.getUid(), outputSchema.getUid(), false);
         String url = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getCreateFunctionPath();
         Function body = given()
@@ -133,6 +133,41 @@ class FunctionBasicTests {
                 .body("lazyDeployment", equalTo(false))
                 .extract().body().as(Function.class);
         testHelper.pause(30000);
+        String urlGet = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getFindFunctionPath().replace("{uid}", body.getUid());
+        given()
+                .when()
+                .get(urlGet)
+                .then()
+                .statusCode(200)
+                .body("deploymentState", equalTo("DEPLOYED"));
+    }
+
+    @Test
+    @Order(60)
+    void testDeployLazyFunction() throws IOException {
+        JsonSchema inputSchema = testHelper.createFunctionJsonSchema(functionValueProvider, "fullcpuInputSchema");
+        JsonSchema outputSchema = testHelper.createFunctionJsonSchema(functionValueProvider, "fullcpuOutputSchema");
+        Function function = new TestDataGenerator().generateFunction("dummyFunctionFullCpu", inputSchema.getUid(), outputSchema.getUid(), true);
+        String url = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getCreateFunctionPath();
+        Function body = given()
+                .body(function)
+                .contentType("application/json")
+                .when()
+                .post(url)
+                .then()
+                .statusCode(200)
+                .body("lazyDeployment", equalTo(true))
+                .extract().body().as(Function.class);
+
+        String deployUrl = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getDeployFunctionPath().replace("{uid}", body.getUid());
+        given()
+                .when()
+                .get(deployUrl)
+                .then()
+                .statusCode(200);
+
+        testHelper.pause(30000);
+
         String urlGet = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getFindFunctionPath().replace("{uid}", body.getUid());
         given()
                 .when()
