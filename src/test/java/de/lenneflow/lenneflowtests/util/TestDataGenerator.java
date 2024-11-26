@@ -52,7 +52,7 @@ public class TestDataGenerator {
         return workflow;
     }
 
-    public List<SimpleWorkflowStep> generateSimpleWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId, String jsonFileName) throws IOException {
+    public List<SimpleWorkflowStep> generateSimpleWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId,String fullCpuFunctionId, String jsonFileName) throws IOException {
         List<SimpleWorkflowStep> simpleWorkflowSteps = new ArrayList<>();
         JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName)).get("steps");
         if(node.get("simple") == null || node.get("simple").isNull() || node.get("simple").isEmpty()) {
@@ -60,14 +60,14 @@ public class TestDataGenerator {
         }
         SimpleWorkflowStep[] steps = mapper.readValue(node.get("simple").toString(), SimpleWorkflowStep[].class);
         for(SimpleWorkflowStep step : steps) {
-            step.setFunctionUid(step.getFunctionUid().replace("randomFunction", randomFunctionId).replace("sleepFunction", sleepFunctionId));
+            step.setFunctionUid(step.getFunctionUid().replace("randomFunction", randomFunctionId).replace("sleepFunction", sleepFunctionId).replace("fullcpuFunction", fullCpuFunctionId));
             step.setWorkflowUid(workflowUid);
             simpleWorkflowSteps.add(step);
         }
         return simpleWorkflowSteps;
     }
 
-    public List<WhileWorkflowStep> generateWhileWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId, String jsonFileName) throws IOException {
+    public List<WhileWorkflowStep> generateWhileWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId,String fullCpuFunctionId, String jsonFileName) throws IOException {
         List<WhileWorkflowStep> workflowSteps = new ArrayList<>();
         JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName)).get("steps");
         if(node.get("while") == null || node.get("while").isNull() || node.get("while").isEmpty()) {
@@ -75,7 +75,7 @@ public class TestDataGenerator {
         }
         WhileWorkflowStep[] steps = mapper.readValue(node.get("while").toString(), WhileWorkflowStep[].class);
         for(WhileWorkflowStep step : steps) {
-            step.setFunctionUid(step.getFunctionUid().replace("randomFunction", randomFunctionId).replace("sleepFunction", sleepFunctionId));
+            step.setFunctionUid(step.getFunctionUid().replace("randomFunction", randomFunctionId).replace("sleepFunction", sleepFunctionId).replace("fullcpuFunction", fullCpuFunctionId));
             step.setWorkflowUid(workflowUid);
             workflowSteps.add(step);
         }
@@ -97,7 +97,7 @@ public class TestDataGenerator {
         return workflowSteps;
     }
 
-    public List<SwitchWorkflowStep> generateSwitchWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId, String jsonFileName) throws IOException {
+    public List<SwitchWorkflowStep> generateSwitchWorkflowSteps(String workflowUid, String randomFunctionId, String sleepFunctionId,String fullCpuFunctionId, String jsonFileName) throws IOException {
         List<SwitchWorkflowStep> workflowSteps = new ArrayList<>();
         JsonNode node = mapper.readTree(getClass().getResource("/test-data/" + jsonFileName)).get("steps");
         if(node.get("switch") == null || node.get("switch").isNull() || node.get("switch").isEmpty()) {
@@ -106,7 +106,7 @@ public class TestDataGenerator {
         SwitchWorkflowStep[] steps = mapper.readValue(node.get("switch").toString(), SwitchWorkflowStep[].class);
         for(SwitchWorkflowStep step : steps) {
             for (DecisionCase decisionCase : step.getDecisionCases()) {
-                decisionCase.setFunctionUid(decisionCase.getFunctionUid().replace("randomFunction", randomFunctionId).replace("sleepFunction", sleepFunctionId));
+                decisionCase.setFunctionUid(decisionCase.getFunctionUid().replace("randomFunction", randomFunctionId).replace("sleepFunction", sleepFunctionId).replace("fullcpuFunction", fullCpuFunctionId));
             }
             step.setWorkflowUid(workflowUid);
             workflowSteps.add(step);

@@ -177,8 +177,9 @@ public class TestHelper {
     public void createWorkflowSteps(WorkflowValueProvider workflowValueProvider, FunctionValueProvider functionValueProvider, String workflowUid, String jsonFileName) throws IOException {
         Function randomFunction = findFunction(functionValueProvider, "function-random");
         Function sleepFunction = findFunction(functionValueProvider, "function-sleep");
+        Function fullcpuFunction = findFunction(functionValueProvider, "function-fullcpu");
         //Simple Steps
-        List<SimpleWorkflowStep> simpleSteps = new TestDataGenerator().generateSimpleWorkflowSteps(workflowUid, randomFunction.getUid(), sleepFunction.getUid(), jsonFileName);
+        List<SimpleWorkflowStep> simpleSteps = new TestDataGenerator().generateSimpleWorkflowSteps(workflowUid, randomFunction.getUid(), sleepFunction.getUid(),fullcpuFunction.getUid(), jsonFileName);
         for (SimpleWorkflowStep step : simpleSteps) {
             String url = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getCreateSimpleWorkflowStepPath();
             given()
@@ -191,7 +192,7 @@ public class TestHelper {
             pause(1000);
         }
         //Switch steps
-        List<SwitchWorkflowStep> switchSteps = new TestDataGenerator().generateSwitchWorkflowSteps(workflowUid, randomFunction.getUid(), sleepFunction.getUid(), jsonFileName);
+        List<SwitchWorkflowStep> switchSteps = new TestDataGenerator().generateSwitchWorkflowSteps(workflowUid, randomFunction.getUid(), sleepFunction.getUid(),fullcpuFunction.getUid(), jsonFileName);
         for (SwitchWorkflowStep step : switchSteps) {
             String url = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getCreateSwitchWorkflowStepPath();
             given()
@@ -204,7 +205,7 @@ public class TestHelper {
             pause(1000);
         }
         //While Steps
-        List<WhileWorkflowStep> whileSteps = new TestDataGenerator().generateWhileWorkflowSteps(workflowUid, randomFunction.getUid(), sleepFunction.getUid(), jsonFileName);
+        List<WhileWorkflowStep> whileSteps = new TestDataGenerator().generateWhileWorkflowSteps(workflowUid, randomFunction.getUid(), sleepFunction.getUid(),fullcpuFunction.getUid(), jsonFileName);
         for (WhileWorkflowStep step : whileSteps) {
             String url = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getCreateWhileWorkflowStepPath();
             given()
@@ -267,6 +268,20 @@ public class TestHelper {
         for (Workflow workflow : workflows) {
             if (workflow.getName().equalsIgnoreCase(workflowName))
                 return workflow;
+        }
+        return null;
+    }
+
+    public Cluster findCluster(WorkerValueProvider workerValueProvider, String clusterName) {
+        String url = workerValueProvider.getWorkerRootUrl() + workerValueProvider.getFindAllClustersPath();
+        Cluster[] clusters = given()
+                .when()
+                .get(url)
+                .then()
+                .extract().body().as(Cluster[].class);
+        for (Cluster cluster : clusters) {
+            if (cluster.getClusterName().equalsIgnoreCase(clusterName))
+                return cluster;
         }
         return null;
     }

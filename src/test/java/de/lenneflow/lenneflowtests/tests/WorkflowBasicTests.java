@@ -123,7 +123,8 @@ class WorkflowBasicTests {
     void testCreateSimpleWorkflowSteps() throws IOException {
         Function randomFunction = testHelper.findFunction(functionValueProvider, "function-random");
         Function sleepFunction = testHelper.findFunction(functionValueProvider, "function-sleep");
-        List<SimpleWorkflowStep> workflowSteps = new TestDataGenerator().generateSimpleWorkflowSteps(savedWorkflowUid, randomFunction.getUid(), sleepFunction.getUid(),"workflow.json");
+        Function fullcpuFunction = testHelper.findFunction(functionValueProvider, "function-fullcpu");
+        List<SimpleWorkflowStep> workflowSteps = new TestDataGenerator().generateSimpleWorkflowSteps(savedWorkflowUid, randomFunction.getUid(), sleepFunction.getUid(),fullcpuFunction.getUid(),"workflow.json");
         for (SimpleWorkflowStep step : workflowSteps) {
             String url = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getCreateSimpleWorkflowStepPath();
             given()
@@ -143,7 +144,8 @@ class WorkflowBasicTests {
     void testCreateSwitchWorkflowSteps() throws IOException {
         Function randomFunction = testHelper.findFunction(functionValueProvider, "function-random");
         Function sleepFunction = testHelper.findFunction(functionValueProvider, "function-sleep");
-        List<SwitchWorkflowStep> workflowSteps = new TestDataGenerator().generateSwitchWorkflowSteps(savedWorkflowUid, randomFunction.getUid(), sleepFunction.getUid(),"workflow.json");
+        Function fullcpuFunction = testHelper.findFunction(functionValueProvider, "function-fullcpu");
+        List<SwitchWorkflowStep> workflowSteps = new TestDataGenerator().generateSwitchWorkflowSteps(savedWorkflowUid, randomFunction.getUid(), sleepFunction.getUid(),fullcpuFunction.getUid(),"workflow.json");
         for (SwitchWorkflowStep step : workflowSteps) {
             String url = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getCreateSwitchWorkflowStepPath();
             given()
@@ -163,7 +165,8 @@ class WorkflowBasicTests {
     void testCreateWhileWorkflowSteps() throws IOException {
         Function randomFunction = testHelper.findFunction(functionValueProvider, "function-random");
         Function sleepFunction = testHelper.findFunction(functionValueProvider, "function-sleep");
-        List<WhileWorkflowStep> workflowSteps = new TestDataGenerator().generateWhileWorkflowSteps(savedWorkflowUid, randomFunction.getUid(), sleepFunction.getUid(),"workflow.json");
+        Function fullcpuFunction = testHelper.findFunction(functionValueProvider, "function-fullcpu");
+        List<WhileWorkflowStep> workflowSteps = new TestDataGenerator().generateWhileWorkflowSteps(savedWorkflowUid, randomFunction.getUid(),sleepFunction.getUid(),fullcpuFunction.getUid(),"workflow.json");
         for (WhileWorkflowStep step : workflowSteps) {
             String url = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getCreateWhileWorkflowStepPath();
             given()
