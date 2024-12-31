@@ -1,9 +1,13 @@
 package de.lenneflow.lenneflowtests.util;
 
+import de.lenneflow.lenneflowtests.enums.DeploymentState;
 import de.lenneflow.lenneflowtests.model.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.given;
 
@@ -11,7 +15,9 @@ import static io.restassured.RestAssured.given;
 public class TestHelper {
 
 
-    public void deleteAllClustersTables(WorkerValueProvider workerValueProvider) {
+    // Delete Section
+
+    public void deleteAllUnmanagedClustersTables(WorkerValueProvider workerValueProvider) {
         String findListUrl = workerValueProvider.getWorkerRootUrl() + workerValueProvider.getFindAllClustersPath();
         String deleteUrl = workerValueProvider.getWorkerRootUrl() + workerValueProvider.getDeleteClusterPath();
         Cluster[] clusters = given()
@@ -20,9 +26,11 @@ public class TestHelper {
                 .then()
                 .extract().body().as(Cluster[].class);
         for (Cluster cluster : clusters) {
-            given()
-                    .when()
-                    .delete(deleteUrl.replace("{uid}", cluster.getUid()));
+            if(!cluster.isManaged()){
+                given()
+                        .when()
+                        .delete(deleteUrl.replace("{uid}", cluster.getUid()));
+            }
         }
     }
 
@@ -41,6 +49,20 @@ public class TestHelper {
         }
     }
 
+    public void deleteAllCredentialsTables(WorkerValueProvider workerValueProvider) {
+        String findListUrl = workerValueProvider.getWorkerRootUrl() + workerValueProvider.getFindAllCloudCredentialPath();
+        String deleteUrl = workerValueProvider.getWorkerRootUrl() + workerValueProvider.getDeleteCloudCredentialPath();
+        CloudCredential[] credentials = given()
+                .when()
+                .get(findListUrl)
+                .then()
+                .extract().body().as(CloudCredential[].class);
+        for (CloudCredential credential : credentials) {
+            given()
+                    .when()
+                    .delete(deleteUrl.replace("{uid}", credential.getUid()));
+        }
+    }
 
     public void deleteAllFunctionsTables(FunctionValueProvider functionValueProvider) {
         String findListUrl = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getFindAllFunctionsList();
@@ -102,6 +124,22 @@ public class TestHelper {
         }
     }
 
+    public void deleteAllWorkflowInstances(OrchestrationValueProvider orchestrationValueProvider) {
+        String findListUrl = orchestrationValueProvider.getOrchestrationRootUrl() + orchestrationValueProvider.getFindAllWorkflowInstancesPath();
+        System.out.println(findListUrl);
+        String deleteUrl = orchestrationValueProvider.getOrchestrationRootUrl() + orchestrationValueProvider.getDeleteWorkflowInstancesPath();
+        WorkflowExecution[] instances = given()
+                .when()
+                .get(findListUrl)
+                .then()
+                .extract().body().as(WorkflowExecution[].class);
+        for (WorkflowExecution instance : instances) {
+            given()
+                    .when()
+                    .delete(deleteUrl.replace("{uid}", instance.getRunUid()));
+        }
+    }
+
     public void deleteAllWorkflows(WorkflowValueProvider workflowValueProvider) {
         String findListUrl = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getFindAllWorkflowsPath();
         String deleteUrl = workflowValueProvider.getWorkflowRootUrl() + workflowValueProvider.getDeleteWorkflowPath();
@@ -160,6 +198,9 @@ public class TestHelper {
             }
         }
     }
+
+
+    // Create Section
 
     public Workflow createWorkflow(WorkflowValueProvider workflowValueProvider, String inputSchemaUid, String outputSchemaUid, String jsonFileName) throws IOException {
         Workflow workflow = new TestDataGenerator().generateWorkflow(inputSchemaUid, outputSchemaUid, jsonFileName);
@@ -244,6 +285,26 @@ public class TestHelper {
                 .extract().body().as(JsonSchema.class);
     }
 
+
+
+    // Find Section
+
+    public List<Function> findDeployedFunctions(FunctionValueProvider functionValueProvider) {
+        List<Function> result = new ArrayList<>();
+        String findListUrl = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getFindAllFunctionsList();
+        Function[] functionList = given()
+                .when()
+                .get(findListUrl)
+                .then()
+                .extract().body().as(Function[].class);
+        for (Function function : functionList) {
+            if(function.getDeploymentState() == DeploymentState.DEPLOYED){
+                result.add(function);
+            }
+        }
+        return result;
+    }
+
     public Function findFunction(FunctionValueProvider functionValueProvider, String functionName) {
         String url = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getFindAllFunctionsList();
         Function[] functions = given()
@@ -272,6 +333,32 @@ public class TestHelper {
         return null;
     }
 
+    public List<Cluster> findAllClusters(WorkerValueProvider workerValueProvider) {
+        String url = workerValueProvider.getWorkerRootUrl() + workerValueProvider.getFindAllClustersPath();
+        Cluster[] clusters = given()
+                .when()
+                .get(url)
+                .then()
+                .extract().body().as(Cluster[].class);
+        return Arrays.stream(clusters).toList();
+    }
+
+    public List<Cluster> findManagedClusters(WorkerValueProvider workerValueProvider) {
+        List<Cluster> clusterList = new ArrayList<>();
+        String url = workerValueProvider.getWorkerRootUrl() + workerValueProvider.getFindAllClustersPath();
+        Cluster[] clusters = given()
+                .when()
+                .get(url)
+                .then()
+                .extract().body().as(Cluster[].class);
+        for (Cluster cluster : clusters) {
+            if(cluster.isManaged()){
+                clusterList.add(cluster);
+            }
+        }
+        return clusterList;
+    }
+
     public Cluster findCluster(WorkerValueProvider workerValueProvider, String clusterName) {
         String url = workerValueProvider.getWorkerRootUrl() + workerValueProvider.getFindAllClustersPath();
         Cluster[] clusters = given()
@@ -287,8 +374,12 @@ public class TestHelper {
     }
 
     public void pause(int millis) {
+        pause(millis, TimeUnit.MILLISECONDS);
+    }
+
+    public void pause(int time, TimeUnit unit) {
         try {
-            Thread.sleep(millis);
+            unit.sleep(time);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

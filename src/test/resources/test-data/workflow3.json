@@ -16,7 +16,7 @@
         "retryCount": 0,
         "functionUid": "fullcpuFunction",
         "inputData": {
-          "durationInSeconds": 60
+          "durationInSeconds": 120
         }
       },
       {

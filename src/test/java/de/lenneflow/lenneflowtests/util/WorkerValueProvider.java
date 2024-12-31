@@ -31,6 +31,12 @@ public class WorkerValueProvider {
     @Value("${resource.access-token.create}")
     private String createAccessTokenPath;
 
+    @Value("${resource.cluster.create}")
+    private String createCloudClusterPath;
+
+    @Value("${resource.cloud-credential.create}")
+    private String createCloudCredentialPath;
+
     @Value("${resource.cluster.register}")
     private String registerLocalClusterPath;
 
@@ -45,6 +51,15 @@ public class WorkerValueProvider {
 
     @Value("${resource.access-token.find}")
     private String findAccessTokenPath;
+
+    @Value("${resource.cloud-credential.find}")
+    private String findCloudCredentialPath;
+
+    @Value("${resource.cloud-credential.delete}")
+    private String deleteCloudCredentialPath;
+
+    @Value("${resource.cloud-credential.find-all}")
+    private String findAllCloudCredentialPath;
 
     @Value("${resource.access-token.delete}")
     private String deleteAccessTokenPath;

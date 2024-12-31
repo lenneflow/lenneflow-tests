@@ -29,8 +29,6 @@ class OrchestrationBasicTests {
 
     final TestHelper testHelper = new TestHelper();
 
-    Workflow hpaTestWorkflow;
-
 
     @Autowired
     OrchestrationValueProvider orchestrationValueProvider;
@@ -45,8 +43,8 @@ class OrchestrationBasicTests {
     WorkerValueProvider workerValueProvider;
 
     @BeforeAll
-    void setUp() throws IOException {
-        hpaTestWorkflow = deleteAndCreateHPATestWorkflow();
+    void setUp(){
+        testHelper.deleteAllWorkflowInstances(orchestrationValueProvider);
     }
 
     @Test
@@ -75,6 +73,7 @@ class OrchestrationBasicTests {
     @Test
     @Order(90)
     void testHorizontalPodScaling() throws IOException {
+        Workflow hpaTestWorkflow = deleteAndCreateHPATestWorkflow();
         String url = orchestrationValueProvider.getOrchestrationRootUrl() + orchestrationValueProvider.getStartWorkflowPath().replace("{uid}", hpaTestWorkflow.getUid());
         WorkflowExecution body = given()
                 .get(url)
@@ -83,7 +82,7 @@ class OrchestrationBasicTests {
                 .body("runStatus", equalTo(RunStatus.RUNNING.toString()))
                 .extract().body().as(WorkflowExecution.class);
         String runId = body.getRunUid();
-        testHelper.pause(30000);
+        testHelper.pause(60000);
         Cluster cluster = testHelper.findCluster(workerValueProvider, "MyLocalCluster");
         KubernetesClient k8sClient = KubernetesUtil.getKubernetesClient(cluster);
         Integer replicaCount = k8sClient.apps().deployments().inNamespace("lenneflow").withName("function-fullcpu").get().getStatus().getReplicas();

@@ -1,6 +1,6 @@
 {
   "AWS": {
-    "clusterName" : "MyCLoudCLuster",
+    "clusterName" : "MyTestCLuster",
     "region" : "us-east-2",
     "cloudProvider" : "AWS",
     "kubernetesVersion" : "1.31",

@@ -43,4 +43,9 @@ public class OrchestrationValueProvider {
     @Value("${resource.orchestration.workflow.state}")
     private String workflowStatePath;
 
+    @Value("${resource.orchestration.workflow.instances.find-all}")
+    public String findAllWorkflowInstancesPath;
+
+    @Value("${resource.orchestration.workflow.instances.delete}")
+    public String deleteWorkflowInstancesPath;
 }

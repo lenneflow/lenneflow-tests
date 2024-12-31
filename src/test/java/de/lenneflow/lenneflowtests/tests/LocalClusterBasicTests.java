@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.*;
 @ContextConfiguration(classes = {WorkerValueProvider.class})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class WorkerBasicTests {
+class LocalClusterBasicTests {
 
     static String savedTokenUid;
     static String savedClusterUid;
@@ -35,7 +35,7 @@ class WorkerBasicTests {
     @BeforeAll
     void setUp() {
         testHelper.deleteAllAccessTokenTables(workerValueProvider);
-        testHelper.deleteAllClustersTables(workerValueProvider);
+        testHelper.deleteAllUnmanagedClustersTables(workerValueProvider);
     }
 
     @Test

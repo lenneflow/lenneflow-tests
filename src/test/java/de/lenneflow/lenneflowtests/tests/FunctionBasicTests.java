@@ -132,7 +132,7 @@ class FunctionBasicTests {
                 .statusCode(200)
                 .body("lazyDeployment", equalTo(false))
                 .extract().body().as(Function.class);
-        testHelper.pause(30000);
+        testHelper.pause(50000);
         String urlGet = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getFindFunctionPath().replace("{uid}", body.getUid());
         given()
                 .when()
@@ -166,7 +166,7 @@ class FunctionBasicTests {
                 .then()
                 .statusCode(200);
 
-        testHelper.pause(30000);
+        testHelper.pause(50000);
 
         String urlGet = functionValueProvider.getFunctionRootUrl() + functionValueProvider.getFindFunctionPath().replace("{uid}", body.getUid());
         given()

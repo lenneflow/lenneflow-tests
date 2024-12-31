@@ -20,6 +20,16 @@ public class TestDataGenerator {
         return accessToken;
     }
 
+    public CloudCredential generateCloudCredentialObject() throws IOException {
+        JsonNode node = mapper.readTree(getClass().getResource("/test-data/cloud-credentials.json"));
+        CloudCredential cloudCredential = mapper.readValue(node.get("AWS").toString(), CloudCredential.class);
+        String accessKey = reader.getProperty("awsAccessKey");
+        String secretKey = reader.getProperty("awsSecretKey");
+        cloudCredential.setAccessKey(accessKey);
+        cloudCredential.setSecretKey(secretKey);
+        return cloudCredential;
+    }
+
     public JsonSchema generateFunctionJsonSchema(String schemaName) throws IOException {
         JsonNode node = mapper.readTree(getClass().getResource("/test-data/schema.json"));
         return  mapper.readValue(node.get(schemaName).toString(), JsonSchema.class);
@@ -42,6 +52,14 @@ public class TestDataGenerator {
         localCluster.setKubernetesAccessTokenUid(tokenUid);
         localCluster.setHostUrl(hostUrl);
         return localCluster;
+    }
+
+    public ManagedCluster generateCloudClusterObject(String credentialUid) throws IOException {
+        JsonNode node = mapper.readTree(getClass().getResource("/test-data/clusters.json"));
+        ManagedCluster managedCluster = mapper.readValue(node.get("AWS").toString(), ManagedCluster.class);
+        System.out.println(managedCluster.getClusterName());
+        managedCluster.setCloudCredentialUid(credentialUid);
+        return managedCluster;
     }
 
     public Workflow generateWorkflow(String inputSchemaUid, String outputSchemaUid, String jsonFileName) throws IOException {
