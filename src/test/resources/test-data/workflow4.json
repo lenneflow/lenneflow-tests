@@ -1,0 +1,50 @@
+{
+  "workflow": {
+    "name": "workflow4",
+    "description": "workflow to test the scaling functionalities",
+    "timeOutInSeconds": "100000",
+    "inputDataSchemaUid": "",
+    "outputDataSchemaUid": ""
+  },
+  "steps": {
+    "simple": [
+      {
+        "name": "w4step1",
+        "workflowUid": "",
+        "description": "Step  1",
+        "executionOrder": 1,
+        "retryCount": 0,
+        "functionUid": "sleepFunction",
+        "inputData": {
+          "sleepTimeInMillis": 5000
+        }
+      },
+      {
+        "name": "w4step3",
+        "workflowUid": "",
+        "description": "Step 3",
+        "executionOrder": 3,
+        "retryCount": 0,
+        "functionUid": "sleepFunction",
+        "inputData": {
+          "sleepTimeInMillis": 5000
+        }
+      }
+    ],
+    "while": [
+      {
+        "name": "w4step2",
+        "workflowUid": "",
+        "description": "Step 2 while",
+        "executionOrder": 2,
+        "retryCount": 0,
+        "functionUid": "randomFunction",
+        "stopCondition": "[runCount] > 2000",
+        "inputData": {
+          "minValue": 100,
+          "maxValue": 200
+        }
+      }
+    ]
+  }
+}
