@@ -23,4 +23,15 @@ public class KubernetesUtil {
                 .build();
         return new KubernetesClientBuilder().withConfig(config).build();
     }
+
+    public static KubernetesClient getKubernetesClient(Cluster kubernetesCluster, AccessToken accessToken) {
+        String  masterUrl = kubernetesCluster.getApiServerEndpoint();
+        Config config = new ConfigBuilder()
+                .withMasterUrl(masterUrl)
+                .withTrustCerts(true)
+                .withOauthToken(accessToken.getToken())
+                .build();
+        return new KubernetesClientBuilder().withConfig(config).build();
+    }
+
 }

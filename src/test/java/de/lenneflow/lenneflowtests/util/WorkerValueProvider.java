@@ -64,6 +64,9 @@ public class WorkerValueProvider {
     @Value("${resource.access-token.delete}")
     private String deleteAccessTokenPath;
 
+    @Value("${resource.access-token.extract}")
+    private String extractAccessTokenPath;
+
     @Value("${resource.access-token.find-all}")
     private String findAllAccessTokenPath;
 

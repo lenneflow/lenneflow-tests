@@ -9,32 +9,32 @@
   "steps": {
     "simple": [
       {
-        "name": "w3step1",
+        "name": "w3step2",
         "workflowUid": "",
-        "description": "Step 1",
-        "executionOrder": 1,
+        "description": "Step 2",
+        "executionOrder": 2,
         "retryCount": 0,
         "functionUid": "fullcpuFunction",
         "inputData": {
-          "durationInSeconds": 120
-        }
-      },
-      {
-        "name": "w3step2",
-        "workflowUid": "",
-        "description": "Step  2",
-        "executionOrder": 2,
-        "retryCount": 0,
-        "functionUid": "sleepFunction",
-        "inputData": {
-          "sleepTimeInMillis": 60000
+          "durationInSeconds": 400
         }
       },
       {
         "name": "w3step3",
         "workflowUid": "",
-        "description": "Step 3",
+        "description": "Step  3",
         "executionOrder": 3,
+        "retryCount": 0,
+        "functionUid": "sleepFunction",
+        "inputData": {
+          "sleepTimeInMillis": 20000
+        }
+      },
+      {
+        "name": "w3step1",
+        "workflowUid": "",
+        "description": "Step 1",
+        "executionOrder": 1,
         "retryCount": 0,
         "functionUid": "randomFunction",
         "inputData": {

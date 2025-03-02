@@ -1,10 +1,7 @@
 package de.lenneflow.lenneflowtests.tests;
 
 import de.lenneflow.lenneflowtests.enums.RunStatus;
-import de.lenneflow.lenneflowtests.model.Cluster;
-import de.lenneflow.lenneflowtests.model.JsonSchema;
-import de.lenneflow.lenneflowtests.model.Workflow;
-import de.lenneflow.lenneflowtests.model.WorkflowExecution;
+import de.lenneflow.lenneflowtests.model.*;
 import de.lenneflow.lenneflowtests.util.*;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.junit.jupiter.api.*;
@@ -16,7 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -34,7 +31,7 @@ class OrchestrationBasicTests {
 
     static String savedHPAByCpuWorkflowRunId;
 
-    static String clusterName = "MyAWSCLuster";
+    static String clusterName = "TestAWSCLuster";
 
     final TestHelper testHelper = new TestHelper();
 
@@ -83,7 +80,7 @@ class OrchestrationBasicTests {
                 .body("workflowName", equalTo(workflow.getName()))
                 .extract().body().as(WorkflowExecution.class);
         savedWorkflowInstanceUid = body.getRunUid();
-        testHelper.pause(60000);//TODO
+        testHelper.pause(90000);
 
         String stateUrlWorkflow = orchestrationValueProvider.getOrchestrationRootUrl() + orchestrationValueProvider.getWorkflowStatePath().replace("{uid}", savedWorkflowInstanceUid);
         given()
@@ -105,9 +102,10 @@ class OrchestrationBasicTests {
                 .body("runStatus", equalTo(RunStatus.RUNNING.toString()))
                 .extract().body().as(WorkflowExecution.class);
         savedHPAByRequestWorkflowRunId = body.getRunUid();
-        testHelper.pause(120000);
+        testHelper.pause(60000);
         Cluster cluster = testHelper.findCluster(workerValueProvider, clusterName);
-        KubernetesClient k8sClient = KubernetesUtil.getKubernetesClient(cluster);
+        AccessToken token = testHelper.extractAccessTokenObject(workerValueProvider, cluster.getUid());
+        KubernetesClient k8sClient = KubernetesUtil.getKubernetesClient(cluster, token);
         Integer replicaCount = k8sClient.apps().deployments().inNamespace("lenneflow").withName("function-random").get().getStatus().getReplicas();
         Assertions.assertTrue(replicaCount > 2);
 
@@ -124,7 +122,8 @@ class OrchestrationBasicTests {
                 .statusCode(200)
                 .body("runStatus", equalTo(RunStatus.COMPLETED.toString()));
         Cluster cluster = testHelper.findCluster(workerValueProvider, clusterName);
-        KubernetesClient k8sClient = KubernetesUtil.getKubernetesClient(cluster);
+        AccessToken token = testHelper.extractAccessTokenObject(workerValueProvider, cluster.getUid());
+        KubernetesClient k8sClient = KubernetesUtil.getKubernetesClient(cluster, token);
         Integer replicaCount = k8sClient.apps().deployments().inNamespace("lenneflow").withName("function-random").get().getStatus().getReplicas();
         Assertions.assertEquals(1, (int) replicaCount);
     }
@@ -141,9 +140,10 @@ class OrchestrationBasicTests {
                 .body("runStatus", equalTo(RunStatus.RUNNING.toString()))
                 .extract().body().as(WorkflowExecution.class);
         savedHPAByCpuWorkflowRunId = body.getRunUid();
-        testHelper.pause(120000);//TODO
+        testHelper.pause(420, TimeUnit.SECONDS);//TODO
         Cluster cluster = testHelper.findCluster(workerValueProvider, clusterName);
-        KubernetesClient k8sClient = KubernetesUtil.getKubernetesClient(cluster);
+        AccessToken token = testHelper.extractAccessTokenObject(workerValueProvider, cluster.getUid());
+        KubernetesClient k8sClient = KubernetesUtil.getKubernetesClient(cluster, token);
         Integer replicaCount = k8sClient.apps().deployments().inNamespace("lenneflow").withName("function-fullcpu").get().getStatus().getReplicas();
         Assertions.assertTrue(replicaCount > 2);
     }
@@ -170,7 +170,8 @@ class OrchestrationBasicTests {
                 .statusCode(200)
                 .body("runStatus", equalTo(RunStatus.COMPLETED.toString()));
         Cluster cluster = testHelper.findCluster(workerValueProvider, clusterName);
-        KubernetesClient k8sClient = KubernetesUtil.getKubernetesClient(cluster);
+        AccessToken token = testHelper.extractAccessTokenObject(workerValueProvider, cluster.getUid());
+        KubernetesClient k8sClient = KubernetesUtil.getKubernetesClient(cluster, token);
         Integer replicaCount = k8sClient.apps().deployments().inNamespace("lenneflow").withName("function-fullcpu").get().getStatus().getReplicas();
         Assertions.assertEquals(1, (int) replicaCount);
     }
@@ -180,7 +181,8 @@ class OrchestrationBasicTests {
     void testVerticalNodesDownScaling() throws IOException {
         testHelper.pause(100000);//TODO
         Cluster cluster = testHelper.findCluster(workerValueProvider, clusterName);
-        KubernetesClient k8sClient = KubernetesUtil.getKubernetesClient(cluster);
+        AccessToken token = testHelper.extractAccessTokenObject(workerValueProvider, cluster.getUid());
+        KubernetesClient k8sClient = KubernetesUtil.getKubernetesClient(cluster, token);
         int nodeCount = k8sClient.nodes().list().getItems().size();
         Assertions.assertEquals(1, nodeCount);
     }

@@ -373,6 +373,15 @@ public class TestHelper {
         return null;
     }
 
+    public AccessToken extractAccessTokenObject(WorkerValueProvider workerValueProvider, String clusterUid) {
+        String url = workerValueProvider.getWorkerRootUrl() + workerValueProvider.getExtractAccessTokenPath().replace("{uid}", clusterUid);
+        return given()
+                .when()
+                .get(url)
+                .then()
+                .extract().body().as(AccessToken.class);
+    }
+
     public void pause(int millis) {
         pause(millis, TimeUnit.MILLISECONDS);
     }

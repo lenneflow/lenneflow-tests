@@ -13,7 +13,7 @@ public class PropertiesReader {
     public PropertiesReader(){
         String userDir = System.getProperty("user.home");
         try {
-            prop.load(new InputStreamReader(new FileInputStream(userDir+"/lenneflow/test-data/test.properties")));
+            prop.load(new InputStreamReader(new FileInputStream(userDir+"/lenneflow-test-data/test.properties")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
